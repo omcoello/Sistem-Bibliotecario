@@ -30,8 +30,8 @@
                            <td><%= libro.autor %></td>
                            <td><%= libro.cantidad %></td>
                            <td>
-                               <a href="/libros/<%= libro.titulo %>" class="settings" title="Settings" data-toggle="tooltip"><i class="material-icons">book</i></a>
-                               
+                               <a href="/libros/<%= libro.titulo %>" class="settings" title="Settings" data-toggle="tooltip"><i class="material-icons">check;</i></a>
+                               <a href="/libros" class="delete" title="Delete" data-toggle="tooltip"><i class="material-icons">&#xE5C9;</i></a>
                            </td>
                          </tr>
                        <% }); %>

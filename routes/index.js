@@ -2,6 +2,7 @@ var express = require('express');
 var router = express.Router();
 const Sequelize = require('sequelize');
 const Libro = require('../models').libro;
+const Prestamo = require('../models').prestamo;
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
@@ -19,20 +20,22 @@ router.get('/libros', function(req, res, next) {
 
 
 router.get('/libros/:tituloLibro', function(req,res,next){
-  models.prestamo.findAll({    
-
-    where: {
-        tituloLibro: req.params.id_tipo,
-    },
-  })
-  .then(prestamo => {
-    res.render('prestamo', { title: 'Préstamo', prestamo: prestamo });
+  var tituloLibro = req.params.tituloLibro;  
+  console.log(tituloLibro)
+  Libro.increment(
+    {cantidad: -1},
+    {where: {titulo: tituloLibro}}
+  )
+  .then(libroArr => {
+    res.render('prestamo', { title: 'Prestamo', libro: libroArr });
   })
   .catch(error => {res.status(400).send(error);
-  })
-
+  }) 
 });
 
+function (){
+
+}
 
 
 module.exports = router;
