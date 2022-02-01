@@ -9,7 +9,8 @@ module.exports = {
         type: Sequelize.INTEGER
       },
       codigo: {
-        type: Sequelize.INTEGER,        
+        type: Sequelize.INTEGER,
+        autoIncrement: true        
       },
       titulo: {
         type: Sequelize.STRING
