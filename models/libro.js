@@ -14,7 +14,9 @@ module.exports = (sequelize, DataTypes) => {
     }
   }
   libro.init({
-    codigo: DataTypes.STRING,
+    codigo: {
+      type: DataTypes.STRING,
+    },
     titulo: DataTypes.STRING,
     autor: DataTypes.STRING,
     cantidad: DataTypes.INTEGER
