@@ -10,10 +10,17 @@ module.exports = {
       },
       codigoLibro: {
         type: Sequelize.INTEGER,
-        autoIncrement: true,
         allowNull: false,
         references: {
           model : "libros",
+          key : "id"
+        }
+      },
+      estudiante:{
+        type: Sequelize.INTEGER,        
+        allowNull: false,
+        references: {
+          model : "estudiantes",
           key : "id"
         }
       },
