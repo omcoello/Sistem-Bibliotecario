@@ -30,14 +30,13 @@
                            <td><%= libro.autor %></td>
                            <td><%= libro.cantidad %></td>
                            <td>
-                               <a href="/libros/<%= libro.titulo %>/<%= est %>" class="settings" title="Settings" data-toggle="tooltip"><i class="material-icons">book</i></a>
-                               
+                               <a href="/libros/prestamo/<%= libro.codigo %>/<%= est %>" class="settings" title="Confirmar" data-toggle="tooltip"><i class="material-icons">check</i></a>
+                               <a href="/libros/prestamo_rechazo/<%= libro.titulo %>/<%= est %>" class="delete" title="Rechazar" data-toggle="tooltip"><i class="material-icons">&#xE5C9;</i></a>
                            </td>
                          </tr>
                        <% }); %>
                    </tbody>
             </table>
-            <a href="/libros/prestamos/activos/<%= est %>">Ver préstamos activos</a>
             <div class="clearfix">
                 <div class="hint-text">Showing <b>5</b> out of <b>25</b> entries</div>
                 <ul class="pagination">
