@@ -4,13 +4,22 @@ const Sequelize = require('sequelize');
 const Libro = require('../models').libro;
 const Prestamo = require('../models').prestamo;
 
+const { QueryTypes } = require('sequelize');
+
 /* GET home page. */
 router.get('/', function (req, res, next) {
   res.render('login', { title: 'Log In' });
 });
 
-router.get('/libros', function (req, res, next) {
-    Libro.findAll()
+router.get('/libros/catalogo/:idEst', function (req, res, next) {
+  var idEst = req.params.idEst;
+  
+  
+  Libro.sequelize.query("select * from libros where codigo not in (select codigoLibro from prestamos where estudiante = :id)",{
+    replacements: {id: idEst},
+    type: QueryTypes.SELECT
+  }
+)    
     .then(catalogo => {
       res.render('libros', { title: 'My Dashboard :: Catalogo', librosArr: catalogo });
     })
