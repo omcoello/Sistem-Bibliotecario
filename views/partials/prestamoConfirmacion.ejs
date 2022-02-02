@@ -30,8 +30,8 @@
                            <td><%= libro.autor %></td>
                            <td><%= libro.cantidad %></td>
                            <td>
-                               <a href="/libros/prestamo/<%= libro.codigo %> %>" class="settings" title="Confirmar" data-toggle="tooltip"><i class="material-icons">check</i></a>
-                               <a href="/libros/prestamo_rechazo/<%= libro.titulo %>" class="delete" title="Rechazar" data-toggle="tooltip"><i class="material-icons">&#xE5C9;</i></a>
+                               <a href="/libros/prestamo/<%= libro.codigo %>/<%= est %>" class="settings" title="Confirmar" data-toggle="tooltip"><i class="material-icons">check</i></a>
+                               <a href="/libros/prestamo_rechazo/<%= libro.titulo %>/<%= est %>" class="delete" title="Rechazar" data-toggle="tooltip"><i class="material-icons">&#xE5C9;</i></a>
                            </td>
                          </tr>
                        <% }); %>

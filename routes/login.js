@@ -22,7 +22,7 @@ router.post('/validate', function (req, res, next) {
       if (usuario == est['user'] && contrasenia == est['password']) {
         verif = true;
         console.log("Retorna un estudiante")
-        return res.redirect('/libros/user/'+est.id);
+        return res.redirect('/libros/catalogo/'+est.id);
       }
 
     });
