@@ -22,7 +22,7 @@ router.post('/validate', function (req, res, next) {
       if (usuario == est['user'] && contrasenia == est['password']) {
         verif = true;
         console.log("Retorna un estudiante")
-        return res.redirect('/libros/catalogo/'+est.id);
+        return res.redirect('/libros/catalogo/' + est.id);
       }
 
     });
@@ -37,18 +37,18 @@ router.post('/validate', function (req, res, next) {
           if (usuario == adm['user'] && contrasenia == adm['password']) {
             verif = true;
             console.log("Entro aquí")
-            return res.redirect('/libros/admin');            
+            return res.redirect('/admin/menu');
           }
         });
         console.log("No deberia estar aqui ya")
-    //Redireccionando al login por datos incorrectos
-    if (!verif) {
-      res.redirect('/login')
-    }
+        //Redireccionando al login por datos incorrectos
+        if (!verif) {
+          res.redirect('/login')
+        }
 
       })();
     }
-    
+
 
   })();
 

@@ -54,7 +54,8 @@ router.get('/libros/prestamo/:codigoLibro/:idEst', function (req, res, next) {
   var idEst = req.params.idEst;
   registrarPrestamo(codigo, idEst);
   Prestamo.findAll({
-    attributes: { exclude: ["EstudianteId"] }
+    attributes: { exclude: ["EstudianteId"] },
+    where: { estudiante: idEst }
   })
     .then(prestamoArr => {
       res.render('prestamosActivos', { title: "Prestamos Activos", prestamos: prestamoArr, est: idEst });
@@ -62,10 +63,11 @@ router.get('/libros/prestamo/:codigoLibro/:idEst', function (req, res, next) {
 });
 
 //Ruta para ver prestamos activos
-router.get('/libros/prestamos/activos/:idEst', function (req, res, next) {  
-  var idEst = req.params.idEst;  
+router.get('/libros/prestamos/activos/:idEst', function (req, res, next) {
+  var idEst = req.params.idEst;
   Prestamo.findAll({
-    attributes: { exclude: ["EstudianteId"] }
+    attributes: { exclude: ["EstudianteId"] },
+    where: { estudiante: idEst }
   })
     .then(prestamoArr => {
       res.render('prestamosActivos', { title: "Prestamos Activos", prestamos: prestamoArr, est: idEst });
@@ -91,13 +93,74 @@ function registrarPrestamo(codigoLib, idEst) {
   var fechaDev = new Date();
   fechaDev.setDate(fechaDev.getDate() + 30);
   formatoFechaDev = fechaDev.toISOString().split('T')[0] + ' ' + hoy.getHours() + ':' + hoy.getMinutes() + ':' + hoy.getSeconds();
-  
+
   Prestamo.create({ codigoLibro: codigoLib, estudiante: idEst, fechaEmision: formatoFecha, fechaDevolucion: formatoFechaDev, createdAt: formatoFecha, updatedAt: formatoFecha });
 }
 
 //SECCION DE ADMINISTRADOR
 
+//Buscar informacion de un libro por su codigo
 
+router.get('/admin/menu', function (req, res, next) {
+
+  res.render("admin", { title: "Admin Menu" });
+
+
+});
+
+router.post('/admin/menu/validate/query', function (req, res, next) {
+  var ingreso = req.body.ingreso;
+  Libro.findAll({
+    where: { codigo: ingreso }
+  })
+    .then(catalogo => {
+      res.render('libros_admin', { title: 'Detalles de libro', librosArr: catalogo });
+    })
+    .catch(error => {
+      res.status(400).send(error);
+    })
+});
+
+router.post('/admin/menu/validate/insert', function (req, res, next) {
+  var codigo = req.body.codigo;
+  var titulo = req.body.titulo;
+  var autor = req.body.autor;
+  var cantidad = parseInt(req.body.cantidad);
+
+  let verif = false;
+  codigosArr = [];
+
+  (async () => {
+    const libroPromess = await Libro.findAll();
+
+    libroPromess.forEach(lib => {
+      codigosArr.push(lib.codigo);
+      if (codigo == lib.codigo) {
+        verif = true;
+        Libro.increment(
+          { cantidad: +cantidad },
+          { where: { codigo: codigo } }
+        )
+        return res.redirect('/admin/menu');
+      }
+
+    });
+
+    //Insercion por inexistencia del libro
+    if (!verif) {
+
+      (async () => {
+        var lastCode = parseInt(codigosArr[codigosArr.length -1]) + 1;
+        const insertPromess = await Libro.create({codigo:lastCode, titulo: titulo, autor: autor, cantidad: cantidad, createdAt: new Date(), updatedAt: new Date()});
+        console.log("Creado nuevo libro con id: " + insertPromess.id);
+        return res.redirect('/admin/menu');
+      })();
+    }
+
+
+  })();
+
+});
 
 
 
