@@ -58,10 +58,6 @@ Finalmente ya se puede levantar el servidor para el respectivo funcionamiento.
 
 #Endpoints:
 
-Estas serán las rutas principales a ejecutarse en el puerto 3000. La ruta raíz es la ruta del login, basta con posicionarse en el login para que fluya correctamente el código.
-
-- GET localhost:3000/ : Ruta raíz que lleva al log in.
-
 Credenciales de estudiante:
 user:abc password:123
 user:user password:user
@@ -72,10 +68,29 @@ user:zxc password:123
 Credenciales de administrador:
 user:admin password:admin
 user:prueba password:prueba
- 
-- POST /validate : Ruta para confirmar las credenciales y redireccionar al login en caso de ingresar datos incorrectos
-- GET /libros/catalogo/:idEst
 
+La ruta raíz es la ruta del login, basta con posicionarse en el login para que fluya correctamente el código.
 
+- GET localhost:3000/ => Ruta raíz que lleva al log in.
+- POST /validate => Ruta para confirmar las credenciales y redireccionar al login en caso de ingresar datos incorrectos.
 
+Para estudiante:
+- GET /libros/catalogo/:idEst  => Ruta para mostrar los libros disponibles segun el estudiante logeado.
+- GET /libros/:tituloLibro/:idEst => Ruta para confirmar el prestamo de un libro mostrando los datos del mismo.
+- GET /libros/prestamo/:codigoLibro/:idEst => Ruta para registrar los prestamos activos luego de validar la confirmación del préstamo.
+- GET /libros/prestamos/activos/:idEst => Ruta de visualización de préstamos activos según el estudiante logeado.
+- GET /libros/prestamo_rechazo/:tituloLibro/:idEst' => Ruta para aumentar la cantidad temporalmente disminuida del libro a prestar en fase de confirmación.
 
+Para administrador:
+- GET /admin/menu => Ruta para mostrar el menú de opciones disponibles del administrador.
+- POST /admin/menu/validate/query => Ruta para validar y mostrar los resultados de la búsqueda de libro por código.
+- POST /admin/menu/validate/insert => Ruta para validar la inserción de un libro o de aumento de cantidad en caso de existir.
+
+#Información de servicios:
+Todo el backend funciona en el puerto 3000, ej: https://localhost:3000/
+
+#Consideraciones
+
+Para mejorar la sincronía de los datos al momento de realizar préstamos sería necesario utilizar funciones async/await para evitar que se renderice la página antes de obtener los resultados de las consultas a la base de datos.
+Para mejorar la seguridad en el logeo se considera reemplazar los caracteres ingresados en contraseña con el punto en negro utilizado comúnmente en las plataformas web.
+Si luego de realizar un préstamo no se visualiza ningúun dato, entonces es necesario volver al catálogo y ver los préstamos activos. Esto se debe a los problemas de sincronía mencionados anteriormente. Si se recarga la página se realiza la inserción dos veces del mismo préstamo.
