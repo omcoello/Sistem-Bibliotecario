@@ -65,9 +65,13 @@ router.get('/libros/prestamo/:codigoLibro/:idEst', function (req, res, next) {
 //Ruta para ver prestamos activos
 router.get('/libros/prestamos/activos/:idEst', function (req, res, next) {
   var idEst = req.params.idEst;
-  Prestamo.findAll({
+  /*Prestamo.findAll({
     attributes: { exclude: ["EstudianteId"] },
     where: { estudiante: idEst }
+  })*/
+  Libro.sequelize.query("select titulo,autor,fechaEmision,fechaDevolucion from libros,prestamos where codigo in (select codigoLibro from prestamos where estudiante = :id) group by codigo", {
+    replacements: { id: idEst },
+    type: QueryTypes.SELECT
   })
     .then(prestamoArr => {
       res.render('prestamosActivos', { title: "Prestamos Activos", prestamos: prestamoArr, est: idEst });
